@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Anfrage</title>
+    <script th:src="@{static/script/script.js}"></script>
+    <link th:href="@{static/css/style.css}" rel="stylesheet" />
+</head>
+<body>
+
+<h1>Serviceanfrage</h1>
+
+<form action="/request" method="post">
+
+    <label>Betreff</label>
+    <input type="text" name="subject">
+
+    <br><br>
+
+    <label>Nachricht</label>
+    <textarea name="message"></textarea>
+
+    <br><br>
+
+    <button type="submit">
+        Absenden
+    </button>
+
+</form>
+
+</body>
+</html>

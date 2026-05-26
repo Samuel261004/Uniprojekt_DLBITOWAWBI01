@@ -1,0 +1,528 @@
+Du kannst daraus sehr gut ein vollständiges Spring-Boot-Webprojekt mit **Benutzerverwaltung, Rollen, Barrierefreiheit und Anfrageverwaltung** machen.
+Die Anforderungen passen perfekt zu einem typischen CRUD-System mit Login und Rollen.
+
+## Vorschlag für die Architektur
+
+### Backend
+
+* Java 21
+* Spring Boot 3
+* Spring Security
+* Spring Data JPA
+* PostgreSQL oder MySQL
+* Thymeleaf oder React/Vue als Frontend
+
+### Frontend
+
+Für Barrierefreiheit empfehle ich:
+
+* Thymeleaf + Bootstrap 5
+  oder
+* React + Material UI
+
+Wenn du schnell fertig werden willst:
+→ **Spring Boot + Thymeleaf + Bootstrap**
+
+---
+
+# 1. Benutzerrollen
+
+Du brauchst mindestens:
+
+| Rolle | Rechte                                                    |
+| ----- | --------------------------------------------------------- |
+| USER  | Anfragen erstellen                                        |
+| ADMIN | Services verwalten, Anfragen bearbeiten, Rollen verwalten |
+
+---
+
+# 2. Datenmodell
+
+## User
+
+```java
+@Entity
+public class User {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String username;
+    private String password;
+    private String email;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+}
+```
+
+## Role Enum
+
+```java
+public enum Role {
+    USER,
+    ADMIN
+}
+```
+
+---
+
+## ServiceOffer
+
+```java
+@Entity
+public class ServiceOffer {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String title;
+    private String description;
+}
+```
+
+---
+
+## ServiceRequest
+
+```java
+@Entity
+public class ServiceRequest {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String subject;
+
+    @Column(length = 2000)
+    private String message;
+
+    private String status;
+
+    @ManyToOne
+    private User createdBy;
+
+    @ManyToOne
+    private ServiceOffer serviceOffer;
+}
+```
+
+---
+
+# 3. Anforderungen umsetzen
+
+---
+
+# ✅ Schriftgröße individuell anpassen
+
+Am einfachsten mit CSS-Klassen und JavaScript.
+
+## HTML
+
+```html
+<button onclick="setFontSize('small')">A-</button>
+<button onclick="setFontSize('medium')">A</button>
+<button onclick="setFontSize('large')">A+</button>
+```
+
+## JavaScript
+
+```javascript
+function setFontSize(size) {
+    document.body.className = size;
+    localStorage.setItem("fontSize", size);
+}
+```
+
+## CSS
+
+```css
+.small {
+    font-size: 14px;
+}
+
+.medium {
+    font-size: 18px;
+}
+
+.large {
+    font-size: 24px;
+}
+```
+
+Beim Laden:
+
+```javascript
+window.onload = () => {
+    const size = localStorage.getItem("fontSize");
+    if(size){
+        document.body.className = size;
+    }
+}
+```
+
+---
+
+# ✅ Kontrastreichen Modus aktivieren
+
+## CSS
+
+```css
+.high-contrast {
+    background-color: black;
+    color: yellow;
+}
+
+.high-contrast a {
+    color: cyan;
+}
+```
+
+## Button
+
+```html
+<button onclick="toggleContrast()">Kontrastmodus</button>
+```
+
+## JavaScript
+
+```javascript
+function toggleContrast() {
+    document.body.classList.toggle("high-contrast");
+}
+```
+
+---
+
+# ✅ Vollständig per Tastatur bedienbar
+
+Das ist ein wichtiger Teil von Barrierefreiheit.
+
+Du musst:
+
+* nur echte HTML-Elemente verwenden
+* Fokus sichtbar machen
+* Tab-Reihenfolge korrekt halten
+* keine Maus erzwingen
+
+## Beispiel
+
+```css
+button:focus,
+a:focus,
+input:focus {
+    outline: 3px solid orange;
+}
+```
+
+## Wichtig
+
+Verwende:
+
+* `<button>`
+* `<a>`
+* `<label>`
+* `<form>`
+
+und nicht nur `<div onclick="">`.
+
+---
+
+# ✅ Serviceangebote verwalten (Admin)
+
+CRUD-System.
+
+## Controller
+
+```java
+@Controller
+@RequestMapping("/admin/services")
+@PreAuthorize("hasRole('ADMIN')")
+public class ServiceOfferController {
+}
+```
+
+## Funktionen
+
+* Service erstellen
+* bearbeiten
+* löschen
+* anzeigen
+
+---
+
+# ✅ Serviceanfragen online einreichen
+
+## Formular
+
+```html
+<form th:action="@{/requests}" method="post">
+
+    <input type="text" name="subject">
+
+    <textarea name="message"></textarea>
+
+    <button type="submit">Absenden</button>
+
+</form>
+```
+
+## Controller
+
+```java
+@PostMapping("/requests")
+public String createRequest(ServiceRequest request,
+                             Authentication auth) {
+
+    User user = userService.findByUsername(auth.getName());
+
+    request.setCreatedBy(user);
+    request.setStatus("OFFEN");
+
+    requestRepository.save(request);
+
+    return "redirect:/success";
+}
+```
+
+---
+
+# ✅ Administrator bearbeitet Anfragen
+
+## Admin-Seite
+
+```java
+@GetMapping("/admin/requests")
+public String listRequests(Model model) {
+
+    model.addAttribute("requests",
+        requestRepository.findAll());
+
+    return "admin/requests";
+}
+```
+
+## Status ändern
+
+```java
+request.setStatus("BEARBEITET");
+```
+
+---
+
+# ✅ Bestätigung der Anfrage
+
+Nach dem Absenden:
+
+```java
+return "confirmation";
+```
+
+## confirmation.html
+
+```html
+<h1>Ihre Anfrage wurde erfolgreich eingereicht.</h1>
+```
+
+Optional:
+
+* E-Mail senden mit Spring Mail
+
+---
+
+# ✅ Benutzerrollen verwalten
+
+Nur ADMIN darf Rollen ändern.
+
+## Beispiel
+
+```java
+@PostMapping("/admin/users/{id}/role")
+public String changeRole(@PathVariable Long id,
+                         @RequestParam Role role) {
+
+    User user = userRepository.findById(id).orElseThrow();
+
+    user.setRole(role);
+
+    userRepository.save(user);
+
+    return "redirect:/admin/users";
+}
+```
+
+---
+
+# 4. Spring Security konfigurieren
+
+## SecurityConfig
+
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http)
+            throws Exception {
+
+        http
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/admin/**")
+                .hasRole("ADMIN")
+                .requestMatchers("/", "/requests/**")
+                .authenticated()
+                .anyRequest()
+                .permitAll()
+            )
+            .formLogin(withDefaults());
+
+        return http.build();
+    }
+}
+```
+
+---
+
+# 5. Projektstruktur
+
+```text
+src/main/java
+ ├── controller
+ ├── service
+ ├── repository
+ ├── model
+ ├── security
+
+src/main/resources
+ ├── templates
+ ├── static
+ │    ├── css
+ │    ├── js
+```
+
+---
+
+# 6. Sehr wichtige Barrierefreiheits-Punkte
+
+Für gute Bewertung in einer Hochschule/Ausbildung:
+
+## Verwende ARIA-Attribute
+
+```html
+<button aria-label="Kontrastmodus aktivieren">
+```
+
+---
+
+## Labels für Inputs
+
+```html
+<label for="subject">Betreff</label>
+<input id="subject">
+```
+
+---
+
+## Semantic HTML
+
+Gut:
+
+```html
+<nav>
+<main>
+<section>
+<footer>
+```
+
+Nicht:
+
+```html
+<div>
+```
+
+---
+
+# 7. Gute Zusatzfeatures
+
+Damit wirkt das Projekt professioneller:
+
+## Optional
+
+* E-Mail-Bestätigung
+* Passwortverschlüsselung mit BCrypt
+* Dark Mode
+* Responsive Design
+* Suchfunktion für Anfragen
+* Pagination
+* Validierung
+
+---
+
+# 8. Empfohlener Ablauf
+
+## Schritt 1
+
+Projekt erstellen:
+
+* Spring Initializr
+* Dependencies:
+
+  * Spring Web
+  * Spring Security
+  * Spring Data JPA
+  * Thymeleaf
+  * Validation
+  * PostgreSQL Driver
+
+---
+
+## Schritt 2
+
+Login + Rollen
+
+---
+
+## Schritt 3
+
+CRUD für Services
+
+---
+
+## Schritt 4
+
+Anfrageformular
+
+---
+
+## Schritt 5
+
+Admin-Bearbeitung
+
+---
+
+## Schritt 6
+
+Barrierefreiheit
+
+---
+
+# 9. Was dein Projekt am Ende ist
+
+Im Grunde baust du:
+
+> Ein barrierefreies Service-Portal mit Rollenverwaltung und Ticket-System.
+
+Das ist ein sehr gutes Portfolio-/Studienprojekt.
+
+Wenn du möchtest, kann ich dir als Nächstes auch:
+
+* eine komplette Projektstruktur,
+* ein ER-Diagramm,
+* fertige Klassen,
+* eine Security-Konfiguration,
+* SQL-Tabellen,
+* oder ein vollständiges Minimalprojekt zeigen.

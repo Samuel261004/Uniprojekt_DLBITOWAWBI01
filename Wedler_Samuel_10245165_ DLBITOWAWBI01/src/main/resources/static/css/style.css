@@ -1,0 +1,26 @@
+.small {
+    font-size: 14px;
+}
+
+.medium {
+    font-size: 18px;
+}
+
+.large {
+    font-size: 24px;
+}
+
+.high-contrast {
+    background-color: black;
+    color: yellow;
+}
+
+.high-contrast a {
+    color: cyan;
+}
+
+button:focus,
+a:focus,
+input:focus {
+    outline: 3px solid orange;
+}

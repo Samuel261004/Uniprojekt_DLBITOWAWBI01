@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin</title>
+    <script th:src="@{static/script/script.js}"></script>
+    <link th:href="@{static/css/style.css}" rel="stylesheet" />
+</head>
+<body>
+
+<h1>Alle Anfragen</h1>
+
+<table border="1">
+
+<tr>
+    <th>ID</th>
+    <th>Betreff</th>
+    <th>Status</th>
+</tr>
+
+<tr th:each="request : ${requests}">
+    <td th:text="${request.id}"></td>
+    <td th:text="${request.subject}"></td>
+    <td th:text="${request.status}"></td>
+</tr>
+
+</table>
+
+</body>
+</html>

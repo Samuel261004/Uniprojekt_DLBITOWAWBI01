@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Profil</title>
+    <script th:src="@{/script/script.js}">
+        alert("JS funktioniert");
+    </script>
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+
+<body>
+<h1>Profilseite</h1>
+<p>Hier können Sie Ihre Profilinformationen anzeigen und bearbeiten.</p>
+<button onclick="setFontSize('small')">Schriftgröße klein</button>
+<button onclick="setFontSize('medium')">Schriftgröße mittel</button>
+<button onclick="setFontSize('large')">Schriftgröße groß</button>
+<button onclick="toggleContrast()">Kontrastmodus</button>
+</body>
+</html>

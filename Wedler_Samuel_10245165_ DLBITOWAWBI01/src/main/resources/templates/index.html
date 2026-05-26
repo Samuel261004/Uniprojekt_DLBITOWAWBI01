@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Serviceportal</title>
+    <script th:src="@{static/script/script.js}"></script>
+    <link th:href="@{static/css/style.css}" rel="stylesheet" />
+</head>
+<body>
+
+<a href="/profile">Profil</a>
+
+<h1>Serviceangebote</h1>
+
+<ul>
+    <li th:each="service : ${services}">
+        <span th:text="${service.title}"></span>
+    </li>
+</ul>
+
+<a href="/request">Anfrage erstellen</a>
+
+</body>
+</html>
