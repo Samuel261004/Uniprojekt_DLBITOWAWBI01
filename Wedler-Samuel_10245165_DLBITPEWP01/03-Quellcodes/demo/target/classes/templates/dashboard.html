@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samuels-Forum/Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Title</title>
+</head>
+<body>
+    <header class="header">
+        <form th:action="@{/logout}" method="post" class="logout">
+            <input type="submit" class="logout" value="Logout">
+        </form>
+    </header>
+
+    <div class="page">
+        <div class="menu">
+            <ul class="posts">
+                <li>
+                    <a tabindex="0" aria-current="page" class="ul1">Dashboard</a>
+                </li>
+                <li>
+                    <a href="/myPosts" class="ul2">My Posts</a>
+                </li>
+            </ul>
+        </div>
+        <div class="notmenu">
+        <div class="post">
+            <a th:inline="text" class="user">Hallo <span th:remove="tag" sec:authentication="name">thymeleaf</span>. Unter "My Posts" kannst du Beiträge Posten, indem du auf "+" drückst.</a>
+        </div>
+        <div class="posts-section">
+            <h2>Alle Posts</h2>
+            <div th:if="${#lists.isEmpty(posts)}">
+                <p>Keine Posts verfügbar.</p>
+            </div>
+            <div th:if="${!#lists.isEmpty(posts)}">
+                <ul class="posts">
+                    <li th:each="post : ${posts}">
+                        <div class="pfpname">
+                        <p th:text="${post.userID}" class="pfp"> </p>
+                        <p th:text="${post.user.name}" class="name"></p>
+                        </div>
+                        <div class="postBody">
+                        <h3 th:text="${post.title}">Post Title</h3>
+                        <p th:utext="${post.content}">Post Content</p>
+                        </div>
+                        <small th:text="${post.dateTime}">Post Date</small>
+                        <a th:href="@{/post/{id}(id=${post.postID})}" class="view-details-btn">Antworten</a>
+                    </li>
+                </ul>
+            </div>
+			<div class="pagination">
+			    <ul>
+			        <li th:if="${currentPage > 0}">
+			            <a th:href="@{/dashboard(page=${currentPage - 1})}">← Zurück</a>
+			        </li>
+			        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+			            <a th:href="@{/dashboard(page=${i})}"
+			               th:text="${i + 1}"
+			               th:classappend="${i == currentPage} ? 'active' : ''"></a>
+			        </li>
+			        <li th:if="${currentPage < totalPages - 1}">
+			            <a th:href="@{/dashboard(page=${currentPage + 1})}">Weiter →</a>
+			        </li>
+			    </ul>
+			</div>
+        </div>
+        </div>
+        <div class="menu2">
+            <p>Profil</p>
+            <details>
+                <p>Name: <span th:text="${currentUser.name}"></span></p>
+                <p>ID: <span th:text="${currentUser.USERID}"></span></p>
+                <p>Email: <span th:text="${currentUser.email}"></span></p>
+                <p>Erstellungsdatum: <span th:text="${currentUser.date}"></span></p>
+                <a href="/dAccount">Account löschen</a>
+            </details>
+        </div>
+    </div>
+</body>
+</html>

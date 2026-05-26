@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samuels-Forum/edit</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Title</title>
+</head>
+<body>
+<header class="header">
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" class="logout" value="Logout">
+    </form>
+</header>
+
+<div class="page">
+    <div class="menu">
+        <ul class="posts">
+            <li>
+                <a href="/dashboard" class="ul2">Dashboard</a>
+            </li>
+            <li>
+                <a href="/myPosts" class="ul2">My Posts</a>
+            </li>
+        </ul>
+    </div>
+    <div class="notmenu">
+        <h1>Post bearbeiten</h1>
+        <form th:action="@{/edit/{id}(id=${post.postID})}" method="post" class="wrapper1">
+            <p><strong>Formatierungshilfe:</strong></p>
+            <ul>
+                <li><code>#</code> für Überschrift</li>
+                <li><code>**fett**</code>, <code>*kursiv*</code></li>
+                <li><code>-</code> für Liste</li>
+            </ul>
+            <div class="input-box">
+                <label for="title">Titel</label>
+                <input type="text" id="title" name="title" th:value="${post.title}" required class="title">
+            </div>
+            <div th:if="${TitleError}" class="error">
+                <p th:text="${TitleError}"></p>
+            </div>
+            <div class="input-box">
+                <label for="content">Inhalt</label>
+                <textarea id="content" name="content" required class="content" th:text="${post.content}"></textarea>
+            </div>
+            <div th:if="${ContentError}" class="error">
+                <p th:text="${ContentError}"></p>
+            </div>
+            <div>
+                <input type="submit" value="Post bearbeiten" class="btn">
+            </div>
+        </form>
+    </div>
+    <div class="menu2">
+        <p>Profil</p>
+        <details>
+            <p>Name: <span th:text="${currentUser.name}"></span></p>
+            <p>ID: <span th:text="${currentUser.USERID}"></span></p>
+            <p>Email: <span th:text="${currentUser.email}"></span></p>
+            <p>Erstellungsdatum: <span th:text="${currentUser.date}"></span></p>
+            <a href="dAccount">Account löschen</a>
+        </details>
+    </div>
+</div>
+</body>
+</html>

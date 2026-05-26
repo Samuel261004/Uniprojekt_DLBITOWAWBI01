@@ -1,0 +1,325 @@
+html {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    margin: 0;
+    min-height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.wrapper {
+    display: flex;
+	flex-direction: column;
+    margin: 5% 40% 5% 40%;
+    border: 1px solid black;
+    background-color: lightgray;
+    border-radius: 10px;
+    box-shadow: 1px 5px 22px -7px #000000;
+    justify-content: center;
+    align-items: center;
+}
+.pagination ul {
+    list-style: none;
+    display: flex;
+    gap: 8px;
+    padding: 0;
+}
+.pagination a {
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    text-decoration: none;
+    border-radius: 4px;
+}
+.pagination a.active {
+    background-color: #007bff;
+    color: white;
+}
+.wrapper2{
+    display: flex;
+    border: 1px solid black;
+    background-color: lightgray;
+    border-radius: 10px;
+    padding: 40px 20px 40px 20px;
+}
+.wrapper .form {
+    width: 100%;
+    height: 100%;
+    box-shadow: 1px 5px 22px -7px #000000;
+}
+.center{
+    display: flex;
+    justify-content: center;
+}
+.wrapper .h1 {
+    display: flex;
+    justify-content:center;
+}
+
+.input-box {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+.wrapper .con {
+    display: flex;
+    justify-content: space-between;
+}
+.loggedOut{
+    display: flex;
+    margin: 10px;
+    justify-content: center;
+    color: darkorange;
+}
+.error{
+    display: flex;
+    margin: 10px;
+    justify-content: center;
+    color: red;
+}
+.btn{
+    color: white;
+    background-color: blue;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 10px;
+    cursor: pointer;
+    text-decoration: none;
+}
+.wrapper2.h3{
+    display: flex;
+    justify-content:center;
+}
+.btn:hover{
+    background-color: #8686e1;
+}
+.registerLink{
+    color: black;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 10px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.registerLink:hover{
+    background-color: #d8d6d6;
+}
+.page {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+}
+.page1 {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+.menu {
+    position: fixed;
+    top: 100px;
+    left: 0;
+    width: 15%;
+    height: calc(100% - 100px);
+    background-color: lightgray;
+    border-right: 1px solid black;
+    padding: 10px;
+    box-sizing: border-box;
+    box-shadow: 1px 5px 22px -7px #000000;
+}
+.menu.ul{
+    margin-left: 30%;
+    margin-top: 15%;
+    margin-right: 30%;
+}
+.notmenu{
+    margin-left: 15%;
+    margin-right: 15%;
+    padding-top: 100px;
+	padding-left: 10px;
+	padding-right: 10px;
+    height: calc(100% - 100px);
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    flex: 1;
+}
+.posts {
+    list-style: none;
+}
+.postBody {
+    border: 1px solid black;
+    margin-top: 0;
+    background-color: lightgray;
+    border-radius: 10px;
+    box-shadow: 1px 5px 22px -7px #000000;
+}
+.postBody.h3{
+    border: 1px solid black;
+}
+.header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+    display: flex;
+    height: 100px;
+    background-color: blue;
+    justify-content: flex-start;
+    align-items: center;
+    box-shadow: 1px 5px 22px -7px #000000;
+}
+.pfp {
+    border: 1px solid black;
+    border-radius: 40px;
+    width: fit-content;
+    padding: 0 3px 0 3px;
+}
+.logout {
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.logout:hover{
+    background-color: #d8d6d6;
+}
+.plus{
+    border: 1px solid black;
+    border-radius: 5px;
+    width: fit-content;
+    padding: 5px;
+    color: black;
+    background-color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+.plus:hover{
+    background-color: #d8d6d6;
+}
+.wrapper1{
+    width: 100%;
+    max-width: 1200px;
+    height: 100%;
+    max-height: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: lightgray;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
+    box-shadow: 1px 5px 22px -7px #000000;
+}
+.title{
+    margin-bottom: 20px;
+}
+.content{
+    margin-bottom: 20px;
+}
+.answer{
+    border: 1px solid black;
+    margin-top: 15px;
+    background-color: white;
+}
+.textfield{
+    width: 80%;
+    margin-left:10% ;
+    margin-right: 10%;
+    margin-bottom: 0;
+}
+.abtn{
+    background-color: lightgray;
+}
+.name{
+    text-decoration: none;
+    color: black;
+}
+.pfpname{
+    display: flex;
+    flex-direction: row;
+}
+.formdiv{
+    border-bottom: 1px solid black;
+}
+.middle{
+    display: flex;
+    flex: 1;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.ul1 {
+    background-color: darkgray;
+    text-decoration: none;
+    color: black;
+    width: 100%;
+    cursor: pointer;
+}
+.ul2 {
+    text-decoration: none;
+    color: black;
+    width: 100%;
+    cursor: pointer;
+}
+.view-details-btn {
+    border: 1px solid black;
+    background-color: blue;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+}
+.view-details-btn:hover{
+    background-color: #8686e1;
+}
+.delete-btn{
+    border: 1px solid black;
+    background-color: blue;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+.delete-btn:hover{
+    background-color: #8686e1;
+}
+.menu2 {
+    position: fixed;
+    top: 100px;
+    right: 0;
+    width: 15%;
+    height: calc(100% - 100px);
+    background-color: lightgray;
+    border-left: 1px solid black;
+    padding: 10px;
+    box-sizing: border-box;
+    box-shadow: 1px 5px 22px -7px #000000;
+}
+textarea {
+    resize: vertical;
+}
+.postDetails{
+    border: 1px solid black;
+    margin-top: 0;
+    background-color: lightgray;
+    border-radius: 10px;
+}
+.kl{
+    background-color: white;
+}
