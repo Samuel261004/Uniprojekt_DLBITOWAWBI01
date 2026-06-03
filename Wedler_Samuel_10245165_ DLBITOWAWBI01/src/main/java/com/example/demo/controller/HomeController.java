@@ -35,4 +35,10 @@ public class HomeController {
     public String profile() {
         return "profile";
     }
+
+    @GetMapping("/login")
+    public String login() {
+        System.out.println("Login");
+        return "login";
+    }
 }

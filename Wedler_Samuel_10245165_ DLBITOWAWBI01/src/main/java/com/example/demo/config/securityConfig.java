@@ -2,10 +2,12 @@ package com.example.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 @Configuration
 public class securityConfig {
@@ -16,20 +18,35 @@ public class securityConfig {
 
         http
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/login", "/register", "/logout", "/css/**", "/js/**").permitAll()
                 .requestMatchers("/admin/**")
                 .hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
             )
             .formLogin(form -> form
-                .successHandler(successHandler())
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/home", true)
+                        .permitAll()
+            )
+            
+            .csrf(csrf -> csrf
+                .ignoringRequestMatchers("/h2-console/**")
+            )
+            .headers(headers -> headers
+                .frameOptions(frame -> frame.sameOrigin())
             );
 
         return http.build();
     }
 
     @Bean
-    public AuthenticationSuccessHandler successHandler() {
-        return new SimpleUrlAuthenticationSuccessHandler("/home");
-    }
+public AuthenticationManager authenticationManager(
+        AuthenticationConfiguration config) throws Exception {
+    return config.getAuthenticationManager();
+}
+@Bean
+public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+}
 }

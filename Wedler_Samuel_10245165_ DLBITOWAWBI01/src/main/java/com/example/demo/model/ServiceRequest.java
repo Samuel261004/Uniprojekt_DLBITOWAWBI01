@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -21,9 +22,11 @@ public class ServiceRequest {
     private String status;
 
     @ManyToOne
+    @JoinColumn(name = "created_by_id")
     private User createdBy;
 
     @ManyToOne
+    @JoinColumn(name = "service_offer_id")
     private ServiceOffer serviceOffer;
 
     public ServiceRequest() {
