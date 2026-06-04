@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="https//www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div>
+    <form th:action="@{/register}" method="POST">
+        <div>
+            <label for="username">Benutzername</label>
+            <input type="text" id="username" name="username" required>
+            <div th:if="${usernameError}">
+                <p th:text="${usernameError}"></p>
+            </div>
+            <div th:if="${usernameLengthError}">
+                <p th:text="${usernameLengthError}"></p>
+            </div>
+        </div>
+        <div>
+            <label for="password">Passwort</label>
+            <input type="password" id="password" name="password" required>
+            <div th:if="${passwordError}">
+                <p th:text="${passwordError}"></p>
+            </div>
+            <div th:if="${passwordLengthError}">
+                <p th:text="${passwordLengthError}"></p>
+            </div>
+        </div>
+        <div>
+            <label for="confirmPassword">Passwort bestätigen</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+            <div th:if="${passwordError}">
+                <p th:text="${passwordError}"></p>
+            </div>
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" required>
+            <div th:if="${emailLengthError}">
+                <p th:text="${emailLengthError}"></p>
+            </div>
+        </div>
+
+        <div>
+            <button type="submit">Register</button>
+            <a href="/login">Login</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
