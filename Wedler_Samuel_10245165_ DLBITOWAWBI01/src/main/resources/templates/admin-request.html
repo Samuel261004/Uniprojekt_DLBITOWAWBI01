@@ -15,12 +15,17 @@
     <th>ID</th>
     <th>Betreff</th>
     <th>Status</th>
+    <th>Aktionen</th>
 </tr>
 
 <tr th:each="request : ${requests}">
     <td th:text="${request.id}"></td>
     <td th:text="${request.subject}"></td>
     <td th:text="${request.status}"></td>
+    <td>
+        <button th:onclick="'acceptRequest(' + ${request.id} + ')'">Anfrage annehmen</button>
+        <button th:onclick="'rejectRequest(' + ${request.id} + ')'">Anfrage ablehnen</button>
+    </td>
 </tr>
 
 </table>

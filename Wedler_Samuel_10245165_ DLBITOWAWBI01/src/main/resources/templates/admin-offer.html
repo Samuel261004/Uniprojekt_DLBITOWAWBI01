@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Serviceportal</title>
+    <script th:src="@{static/script/script.js}"></script>
+    <link th:href="@{static/css/style.css}" rel="stylesheet" />
+</head>
+<body>
+
+    <form action="/admin/offer" method="post">
+        <input type="text" name="title" placeholder="Titel des Serviceangebots" required />
+        <textarea name="description" placeholder="Beschreibung des Serviceangebots"></textarea> 
+        <button type="submit">Serviceangebot hinzufügen</button>
+    </form>
+
+<h1>Serviceangebote</h1>
+
+<ul>
+    <li th:each="service : ${services}">
+        <span th:text="${service.title}"></span>
+        <p th:text="${service.description}"></p>
+        <form th:action="@{/admin/edit/{id}(id=${service.id})}" 
+            method="get" 
+            style="display:inline;">
+            <input type="submit" value="Bearbeiten"> 
+        </form>
+        <form th:action="@{/admin/delete/{id}(id=${service.id})}" method="post"
+            onsubmit="return confirm('Möchtest du diesen Service wirklich löschen?');"
+            style="display:inline;">
+            <input type="submit" value="Löschen">
+        </form>
+    </li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Service bearbeiten</title>
+
+```
+<link th:href="@{/css/style.css}" rel="stylesheet" />
+```
+
+</head>
+<body>
+
+```
+<h1>Service bearbeiten</h1>
+
+<form th:action="@{/admin/edit/{id}(id=${service.id})}" method="post">
+
+    <div>
+        <label for="title">Titel</label>
+        <br>
+        <input type="text"
+               id="title"
+               name="title"
+               th:value="${service.title}"
+               required />
+    </div>
+
+    <br>
+
+    <div>
+        <label for="description">Beschreibung</label>
+        <br>
+        <textarea id="description"
+                  name="description"
+                  rows="8"
+                  cols="60"
+                  required
+                  th:text="${service.description}"></textarea>
+    </div>
+
+    <br>
+
+    <div>
+        <button type="submit">
+            Änderungen speichern
+        </button>
+
+        <a th:href="@{/admin}">
+            Abbrechen
+        </a>
+    </div>
+
+</form>
+```
+
+</body>
+</html>
