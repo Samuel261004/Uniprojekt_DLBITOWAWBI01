@@ -23,13 +23,18 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private String fontSize = "medium";
+    private boolean highContrast = false;
+
     public User() {
     }
 
-    public User(String username, String password, Role role) {
+    public User(String username, String password, Role role, String fontSize, boolean highContrast) {
         this.username = username;
         this.password = password;
         this.role = role;
+        this.fontSize = fontSize;
+        this.highContrast = highContrast;
     }
 
     public Long getId() {
@@ -47,7 +52,15 @@ public class User {
 
     public Role getRole() {
         return role;
-    }   
+    }  
+
+    public String getFontSize() {
+        return fontSize;
+    }
+
+    public boolean isHighContrast() {
+        return highContrast;
+    } 
 
     public void setId(Long id) {
         this.id = id;
@@ -63,5 +76,13 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public void setFontSize(String fontSize) {
+        this.fontSize = fontSize;
+    }
+
+    public void setHighContrast(boolean highContrast) {
+        this.highContrast = highContrast;
     }
 }

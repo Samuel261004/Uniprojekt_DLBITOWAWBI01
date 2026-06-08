@@ -23,3 +23,16 @@ function openModal() {
 function closeModal() {
     document.getElementById("notificationModal").style.display = "none";
 }
+
+function saveSettings() {
+    fetch('/settings', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            fontSize: currentFontSize,
+            highContrast: highContrast
+        })
+    });
+}

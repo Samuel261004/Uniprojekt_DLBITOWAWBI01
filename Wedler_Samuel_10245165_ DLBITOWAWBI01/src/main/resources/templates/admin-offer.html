@@ -6,7 +6,11 @@
     <link th:href="@{static/css/style.css}" rel="stylesheet" />
 </head>
 <body>
-
+    <header>
+        <form th:action="@{/logout}" method="post">
+        <input type="submit" class="logout" value="Logout">
+        </form>
+    </header>
     <form action="/admin/offer" method="post">
         <input type="text" name="title" placeholder="Titel des Serviceangebots" required />
         <textarea name="description" placeholder="Beschreibung des Serviceangebots"></textarea> 

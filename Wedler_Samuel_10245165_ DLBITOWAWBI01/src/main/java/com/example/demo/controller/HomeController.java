@@ -11,8 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.UserSettingsDto;
 import com.example.demo.model.Notification;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
@@ -91,9 +94,22 @@ public class HomeController {
         return "registerSuccess";
     }
 
-    @GetMapping("/profile")
-    public String profile() {
-        return "profile";
+    @GetMapping("/settings")
+    public String settings() {
+        return "settings";
+    }
+
+    @PostMapping("/settings")
+    @ResponseBody
+    public void saveSettings(@RequestBody UserSettingsDto dto,
+                         Authentication authentication) {
+
+        User user = userRepository.findByUsername(authentication.getName());
+
+        user.setFontSize(dto.getFontSize());
+        user.setHighContrast(dto.isHighContrast());
+
+        userRepository.save(user);
     }
 
     @GetMapping("/login")
@@ -135,7 +151,7 @@ public class HomeController {
             return "register";
         }
         else if (password.equals(confirmPassword)) {
-            user = new User(username, passwordEncoder.encode(password), role);
+            user = new User(username, passwordEncoder.encode(password), role, "medium", false);
             userRepository.save(user);
             session.setAttribute("user", user);
             return "redirect:/registerSuccess";

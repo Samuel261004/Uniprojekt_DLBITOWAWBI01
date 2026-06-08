@@ -473,3 +473,7 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Projekte/Wedl
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax Fehler in SQL Befehl "create table notifications (id int primary key, userid int, text varchar(3000), read boolean, foreign key (userid) references users(id)[*]"; erwartet "INDEX, ON UPDATE, ON DELETE, NOT DEFERRABLE, DEFERRABLE, NOCHECK, CHECK, ,, )"
 Syntax error in SQL statement "create table notifications (id int primary key, userid int, text varchar(3000), read boolean, foreign key (userid) references users(id)[*]"; expected "INDEX, ON UPDATE, ON DELETE, NOT DEFERRABLE, DEFERRABLE, NOCHECK, CHECK, ,, )"; SQL statement:
 create table notifications (id int primary key, userid int, text varchar(3000), read boolean, foreign key (userid) references users(id) [42001-240]
+2026-06-08 19:50:23.623429+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax Fehler in SQL Befehl "Alter table users add column fontSize varchar(255)[*], highContrast boolean"
+Syntax error in SQL statement "Alter table users add column fontSize varchar(255)[*], highContrast boolean"; SQL statement:
+Alter table users add column fontSize varchar(255), highContrast boolean [42000-240]

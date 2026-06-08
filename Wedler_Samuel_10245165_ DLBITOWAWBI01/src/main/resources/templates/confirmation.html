@@ -6,7 +6,11 @@
     <link th:href="@{static/css/style.css}" rel="stylesheet" />
 </head>
 <body>
-
+    <header>
+        <form th:action="@{/logout}" method="post">
+        <input type="submit" class="logout" value="Logout">
+        </form>
+    </header>
 <h1>
     Anfrage erfolgreich eingereicht
 </h1>

@@ -29,6 +29,7 @@ public class securityConfig {
                         .defaultSuccessUrl("/home", true)
                         .permitAll()
             )
+            .logout(logout -> logout.permitAll())
             
             .csrf(csrf -> csrf
                 .ignoringRequestMatchers("/h2-console/**")
@@ -36,6 +37,7 @@ public class securityConfig {
             .headers(headers -> headers
                 .frameOptions(frame -> frame.sameOrigin())
             );
+            
 
         return http.build();
     }
