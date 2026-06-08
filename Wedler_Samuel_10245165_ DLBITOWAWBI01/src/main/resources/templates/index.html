@@ -6,8 +6,45 @@
     <link th:href="@{static/css/style.css}" rel="stylesheet" />
 </head>
 <body>
+    <header>
 
-<a href="/profile">Profil</a>
+    <a href="/profile">Profil</a>
+
+    <button id="notificationBtn"
+            th:classappend="${hasUnread} ? 'notification-red' : ''"
+            onclick="openModal()">
+
+        🔔
+    </button>
+
+</header>
+<div id="notificationModal" class="modal">
+
+    <div class="modal-content">
+
+        <h2>Ungelesene Benachrichtigungen</h2>
+
+        <ul>
+            <li th:each="notification : ${notifications}"
+                th:text="${notification.text}">
+            </li>
+        </ul>
+
+        <form th:if="${hasUnread}"
+              method="post"
+              action="/notifications/read">
+
+            <button type="submit">
+                Als gelesen markieren
+            </button>
+
+        </form>
+
+        <button onclick="closeModal()">Schließen</button>
+
+    </div>
+
+</div>
 
 <h1>Serviceangebote</h1>
 

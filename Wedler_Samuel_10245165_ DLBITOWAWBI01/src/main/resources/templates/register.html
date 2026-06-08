@@ -37,13 +37,6 @@
                 <p th:text="${passwordError}"></p>
             </div>
         </div>
-        <div>
-            <label for="email">Email</label>
-            <input type="text" id="email" name="email" required>
-            <div th:if="${emailLengthError}">
-                <p th:text="${emailLengthError}"></p>
-            </div>
-        </div>
 
         <div>
             <button type="submit">Register</button>

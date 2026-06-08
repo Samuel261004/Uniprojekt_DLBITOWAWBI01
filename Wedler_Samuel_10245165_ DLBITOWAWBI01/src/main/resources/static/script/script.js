@@ -15,3 +15,11 @@ window.onload = () => {
 function toggleContrast() {
     document.body.classList.toggle("high-contrast");
 }
+
+function openModal() {
+    document.getElementById("notificationModal").style.display = "block";
+}
+
+function closeModal() {
+    document.getElementById("notificationModal").style.display = "none";
+}

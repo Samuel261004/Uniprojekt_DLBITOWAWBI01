@@ -1,7 +1,11 @@
 package com.example.demo.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,8 +13,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.model.Notification;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
+import com.example.demo.repository.NotificationRepository;
 import com.example.demo.repository.ServiceOfferRepository;
 import com.example.demo.repository.UserRepository;
 
@@ -27,21 +33,52 @@ public class HomeController {
     private final PasswordEncoder passwordEncoder;
 
     private final ServiceOfferRepository repository;
+    private final NotificationRepository notificationRepository;
 
-    public HomeController(ServiceOfferRepository repository, PasswordEncoder passwordEncoder) {
+
+    public HomeController(ServiceOfferRepository repository, PasswordEncoder passwordEncoder, NotificationRepository notificationRepository) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
+        this.notificationRepository = notificationRepository;
     }
 
     @GetMapping("/")
     public String home(Model model) {
 
-        model.addAttribute(
-            "services",
-            repository.findAll()
-        );
+         Authentication authentication =
+        SecurityContextHolder.getContext().getAuthentication();
+
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username);
+
+        Long userId = user.getId();
+
+        List<Notification> unreadNotifications =
+                notificationRepository.findByUserIdAndReadFalse(userId);
+
+        model.addAttribute("services", repository.findAll());
+        model.addAttribute("notifications", unreadNotifications);
+        model.addAttribute("hasUnread", !unreadNotifications.isEmpty());
 
         return "index";
+    }
+
+    @PostMapping("/notifications/read")
+    public String markNotificationsAsRead() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username);
+        Long userId = user.getId();
+
+        List<Notification> notifications =
+                notificationRepository.findByUserIdAndReadFalse(userId);
+
+        notifications.forEach(notification -> notification.setRead(true));
+
+        notificationRepository.saveAll(notifications);
+
+        return "redirect:/";
     }
 
     @GetMapping("/home")
@@ -89,10 +126,6 @@ public class HomeController {
             model.addAttribute("usernameError", "Benutzername ist bereits vergeben.");
             return "register";
         }
-        if (userRepository.existsByEmail(email)) {
-            model.addAttribute("emailRegisterError", "E-Mail ist bereits registriert.");
-            return "register";
-        }
         if ( username.length()>255) {
             model.addAttribute("usernameLengthError", "Benutzername ist zu lang");
             return "register";
@@ -101,18 +134,34 @@ public class HomeController {
             model.addAttribute("passwordLengthError", "Passwort ist zu lang");
             return "register";
         }
-        if ( email.length()>255) {
-            model.addAttribute("emailLengthError", "E-Mail ist zu lang");
-            return "register";
-        }
         else if (password.equals(confirmPassword)) {
-            user = new User(username, passwordEncoder.encode(password), email, role);
+            user = new User(username, passwordEncoder.encode(password), role);
             userRepository.save(user);
             session.setAttribute("user", user);
             return "redirect:/registerSuccess";
         }
         return "register";
     }
+
+@GetMapping("/admin/role-management")
+public String roleManagement() {
+    return "admin-rolemanagement";
+}
+
+@PostMapping("/admin/role-management")
+public String updateRole(
+        @RequestParam Long userId,
+        @RequestParam Role role) {
+
+    User user = userRepository.findById(userId)
+            .orElseThrow();
+
+    user.setRole(role);
+
+    userRepository.save(user);
+
+    return "redirect:/admin/role-management";
+}
 }
 
 

@@ -469,3 +469,7 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Projekte/Wedl
 	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:291)
 	... 16 more
+2026-06-08 09:18:32.050520+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax Fehler in SQL Befehl "create table notifications (id int primary key, userid int, text varchar(3000), read boolean, foreign key (userid) references users(id)[*]"; erwartet "INDEX, ON UPDATE, ON DELETE, NOT DEFERRABLE, DEFERRABLE, NOCHECK, CHECK, ,, )"
+Syntax error in SQL statement "create table notifications (id int primary key, userid int, text varchar(3000), read boolean, foreign key (userid) references users(id)[*]"; expected "INDEX, ON UPDATE, ON DELETE, NOT DEFERRABLE, DEFERRABLE, NOCHECK, CHECK, ,, )"; SQL statement:
+create table notifications (id int primary key, userid int, text varchar(3000), read boolean, foreign key (userid) references users(id) [42001-240]
