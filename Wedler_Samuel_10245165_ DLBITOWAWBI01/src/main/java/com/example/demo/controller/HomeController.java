@@ -143,25 +143,7 @@ public class HomeController {
         return "register";
     }
 
-@GetMapping("/admin/role-management")
-public String roleManagement() {
-    return "admin-rolemanagement";
-}
 
-@PostMapping("/admin/role-management")
-public String updateRole(
-        @RequestParam Long userId,
-        @RequestParam Role role) {
-
-    User user = userRepository.findById(userId)
-            .orElseThrow();
-
-    user.setRole(role);
-
-    userRepository.save(user);
-
-    return "redirect:/admin/role-management";
-}
 }
 
 
