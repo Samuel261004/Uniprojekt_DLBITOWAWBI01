@@ -10,7 +10,7 @@
         <form th:action="@{/logout}" method="post">
         <input type="submit" class="logout" value="Logout">
         </form>
-        <a href="/">Startseite</a>
+        <a href="/">🏠</a>
     </header>
 <form th:action="@{/admin/offer}" method="post">
 
@@ -26,7 +26,7 @@
     <textarea name="description"
               placeholder="Beschreibung des Serviceangebots"></textarea>
 
-    <button type="submit">
+    <button type="submit" class="btn">
         Serviceangebot hinzufügen
     </button>
 
@@ -41,12 +41,12 @@
         <form th:action="@{/admin/edit/{id}(id=${service.id})}" 
             method="get" 
             style="display:inline;">
-            <input type="submit" value="Bearbeiten"> 
+            <input type="submit" value="Bearbeiten" class="btn">
         </form>
         <form th:action="@{/admin/delete/{id}(id=${service.id})}" method="post"
             onsubmit="return confirm('Möchtest du diesen Service wirklich löschen?');"
             style="display:inline;">
-            <input type="submit" value="Löschen">
+            <input type="submit" value="Löschen" class="btn">
         </form>
     </li>
 </ul>

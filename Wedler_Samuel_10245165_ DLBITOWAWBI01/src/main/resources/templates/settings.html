@@ -7,19 +7,19 @@
 </head>
 
 <body th:classappend="${fontSize} + ' ' + (${highContrast} ? 'high-contrast' : '')">
-    <header>
+    <header class="header">
         <form th:action="@{/logout}" method="post">
         <input type="submit" class="logout" value="Logout">
         </form>
 
-        <button onclick="saveSettings()">Einstellungen speichern</button>
-        <a href="/">Startseite</a>
+        <button onclick="saveSettings()" class="btn">Einstellungen speichern</button>
+        <a href="/">🏠</a>
     </header>
 <h1>Profilseite</h1>
 <p>Hier können Sie die Anzeigeeinstellungen bearbeiten.</p>
-<button onclick="setFontSize('small')">Schriftgröße klein</button>
-<button onclick="setFontSize('medium')">Schriftgröße mittel</button>
-<button onclick="setFontSize('large')">Schriftgröße groß</button>
-<button onclick="toggleContrast()">Kontrastmodus</button>
+<button onclick="setFontSize('small')" class="btn">Schriftgröße klein</button>
+<button onclick="setFontSize('medium')" class="btn">Schriftgröße mittel</button>
+<button onclick="setFontSize('large')" class="btn">Schriftgröße groß</button>
+<button onclick="toggleContrast()" class="btn">Kontrastmodus</button>
 </body>
 </html>

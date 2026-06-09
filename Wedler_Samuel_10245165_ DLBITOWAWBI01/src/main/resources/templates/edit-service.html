@@ -16,11 +16,11 @@
         <form th:action="@{/logout}" method="post">
         <input type="submit" class="logout" value="Logout">
         </form>
-        <a href="/">Startseite</a>
+        <a href="/">🏠</a>
     </header>
 <h1>Service bearbeiten</h1>
 
-<form th:action="@{/admin/edit/{id}(id=${service.id})}" method="post">
+<form th:action="@{/admin/edit/{id}(id=${service.id})}" method="post" class="wrapper">
 
     <div>
         <label for="title">Titel</label>
@@ -48,11 +48,11 @@
     <br>
 
     <div>
-        <button type="submit">
+        <button type="submit" class="btn">
             Änderungen speichern
         </button>
 
-        <a th:href="@{/admin}">
+        <a th:href="@{/admin}" class="btn">
             Abbrechen
         </a>
     </div>

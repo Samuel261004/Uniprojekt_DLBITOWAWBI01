@@ -62,6 +62,8 @@ public class HomeController {
         model.addAttribute("services", repository.findAll());
         model.addAttribute("notifications", unreadNotifications);
         model.addAttribute("hasUnread", !unreadNotifications.isEmpty());
+        model.addAttribute("fontSize", user.getFontSize());
+        model.addAttribute("highContrast", user.isHighContrast());
 
         return "index";
     }
