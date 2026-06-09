@@ -40,7 +40,7 @@ public class AdminController {
         this.notificationRepository = notificationRepository;
     }
 
-    @GetMapping("/admin/requests")
+    @GetMapping("/admin/request")
     public String requests(Model model) {
 
         model.addAttribute(
@@ -48,10 +48,10 @@ public class AdminController {
             repository.findAll()
         );
 
-        return "admin-requests";
+        return "admin-request";
     }
 
-    @GetMapping("/admin/offers")
+    @GetMapping("/admin/offer")
     public String offers(Model model) {
 
         model.addAttribute(
@@ -59,7 +59,7 @@ public class AdminController {
             offerRepository.findAll()
         );
 
-        return "admin-offers";
+        return "admin-offer";
     }
 
     @PostMapping("/admin/offer")
@@ -67,7 +67,7 @@ public class AdminController {
 
         offerRepository.save(new ServiceOffer(title, description));
 
-        return "redirect:/admin/offers";
+        return "redirect:/admin/offer";
     }
 
     @GetMapping("/admin/edit/{id}")
@@ -95,7 +95,7 @@ public class AdminController {
 
         offerRepository.save(service);
 
-        return "redirect:/admin";
+        return "redirect:/admin/offer";
     }
 
     @PostMapping("/admin/delete/{id}")
@@ -103,7 +103,7 @@ public class AdminController {
 
         offerRepository.deleteById(id);
 
-        return "redirect:/admin";
+        return "redirect:/admin/offer";
     }
 
     @GetMapping("/admin/role-management")
@@ -149,7 +149,7 @@ public class AdminController {
 
         notificationRepository.save(notification);
 
-        return "redirect:/admin/requests";
+        return "redirect:/admin/request";
     }
 
     @PostMapping("/admin/request/{id}/reject")
@@ -176,6 +176,6 @@ public class AdminController {
 
         notificationRepository.save(notification);
 
-        return "redirect:/admin/requests";
+        return "redirect:/admin/request";
     }
 }

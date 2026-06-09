@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -23,7 +24,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(name = "FONTSIZE")
     private String fontSize = "medium";
+
+    @Column(name = "HIGHCONTRAST")
     private boolean highContrast = false;
 
     public User() {

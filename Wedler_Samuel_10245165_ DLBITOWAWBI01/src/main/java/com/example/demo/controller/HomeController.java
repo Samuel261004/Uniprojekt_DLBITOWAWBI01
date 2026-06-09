@@ -86,7 +86,7 @@ public class HomeController {
 
     @GetMapping("/home")
     public String homePage() {
-        return "index";
+        return "redirect:/";
     }
 
     @GetMapping("/registerSuccess")

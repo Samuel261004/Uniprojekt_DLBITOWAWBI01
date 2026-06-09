@@ -1,19 +1,28 @@
 console.log("script geladen");
 
+let currentFontSize = localStorage.getItem("fontSize") || "medium";
+let highContrast = localStorage.getItem("highContrast") === "true";
+
+// Initial apply
+window.onload = () => {
+    document.body.className = currentFontSize;
+
+    if (highContrast) {
+        document.body.classList.add("high-contrast");
+    }
+};
+
 function setFontSize(size) {
+    currentFontSize = size;
     document.body.className = size;
     localStorage.setItem("fontSize", size);
 }
 
-window.onload = () => {
-    const size = localStorage.getItem("fontSize");
-    if(size){
-        document.body.className = size;
-    }
-}
-
 function toggleContrast() {
+    highContrast = !highContrast;
+
     document.body.classList.toggle("high-contrast");
+    localStorage.setItem("highContrast", highContrast);
 }
 
 function openModal() {

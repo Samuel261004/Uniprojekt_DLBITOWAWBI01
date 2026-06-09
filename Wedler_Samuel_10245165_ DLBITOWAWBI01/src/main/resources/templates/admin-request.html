@@ -2,14 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Admin</title>
-    <script th:src="@{static/script/script.js}"></script>
-    <link th:href="@{static/css/style.css}" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+<script th:src="@{/script/script.js}"></script>
 </head>
-<body>
+<body th:classappend="${fontSize} + ' ' + (${highContrast} ? 'high-contrast' : '')">
     <header>
         <form th:action="@{/logout}" method="post">
         <input type="submit" class="logout" value="Logout">
         </form>
+        <a href="/">Startseite</a>
     </header>
 <h1>Alle Anfragen</h1>
 
