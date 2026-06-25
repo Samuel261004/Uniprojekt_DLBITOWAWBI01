@@ -1,25 +1,107 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="de">
 <head>
-    <title>Profil</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Einstellungen für Barrierefreiheit - Schriftgröße und Kontrast">
+    <title>Einstellungen - Barrierefreiheit</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}" />
-<script th:src="@{/script/script.js}"></script>
 </head>
-
-<body th:classappend="${fontSize} + ' ' + (${highContrast} ? 'high-contrast' : '')">
-    <header class="header">
-        <form th:action="@{/logout}" method="post">
-        <input type="submit" class="logout" value="Logout">
-        </form>
-
-        <button onclick="saveSettings()" class="btn">Einstellungen speichern</button>
-        <a href="/">🏠</a>
+<body th:classappend="${fontSize} + ' ' + (${highContrast} ? 'high-contrast' : '')" role="application">
+    <header role="banner">
+        <nav role="navigation" aria-label="Kopfnavigation">
+            <a href="/" class="icon-btn" title="Startseite" aria-label="Zurück zur Startseite">
+                <i class="fas fa-home" aria-hidden="true"></i>
+            </a>
+            <button onclick="saveSettings()" class="btn" aria-label="Einstellungen speichern">
+                <i class="fas fa-save" aria-hidden="true"></i> Speichern
+            </button>
+            <form th:action="@{/logout}" method="post" style="display: flex;">
+                <button type="submit" class="btn logout" aria-label="Abmelden">
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Abmelden
+                </button>
+            </form>
+        </nav>
     </header>
-<h1>Profilseite</h1>
-<p>Hier können Sie die Anzeigeeinstellungen bearbeiten.</p>
-<button onclick="setFontSize('small')" class="btn">Schriftgröße klein</button>
-<button onclick="setFontSize('medium')" class="btn">Schriftgröße mittel</button>
-<button onclick="setFontSize('large')" class="btn">Schriftgröße groß</button>
-<button onclick="toggleContrast()" class="btn">Kontrastmodus</button>
+
+    <main role="main">
+        <h1>Barrierefreiheits-Einstellungen</h1>
+        
+        <p>Passen Sie hier die Anzeigeeinstellungen nach Ihren Bedürfnissen an.</p>
+
+        <section aria-labelledby="fontSizeHeading">
+            <h2 id="fontSizeHeading">Schriftgröße anpassen</h2>
+            <p>Wählen Sie eine für Sie angenehme Schriftgröße.</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <button onclick="setFontSize('small')" 
+                        class="btn" 
+                        aria-label="Schriftgröße: Klein (14px)"
+                        title="Kleine Schriftgröße">
+                    <i class="fas fa-text-height" aria-hidden="true"></i> Klein
+                </button>
+                
+                <button onclick="setFontSize('medium')" 
+                        class="btn"
+                        aria-label="Schriftgröße: Mittel (18px)"
+                        title="Mittlere Schriftgröße">
+                    <i class="fas fa-text-height" aria-hidden="true"></i> Mittel
+                </button>
+                
+                <button onclick="setFontSize('large')" 
+                        class="btn"
+                        aria-label="Schriftgröße: Groß (24px)"
+                        title="Große Schriftgröße">
+                    <i class="fas fa-text-height" aria-hidden="true"></i> Groß
+                </button>
+            </div>
+            <p class="success-message" id="fontSizeStatus" style="display: none;">
+                <i class="fas fa-check-circle" aria-hidden="true"></i>
+                <span id="fontSizeStatusText">Schriftgröße aktualisiert</span>
+            </p>
+        </section>
+
+        <section aria-labelledby="contrastHeading">
+            <h2 id="contrastHeading">Kontrastmodus</h2>
+            <p>Aktivieren Sie den hochkontrastiven Modus für bessere Lesbarkeit.</p>
+            
+            <div style="display: flex; gap: 1rem; align-items: center; margin: 1rem 0;">
+                <input type="checkbox" 
+                       id="contrastToggle" 
+                       aria-label="Hochkontrastmodus aktivieren/deaktivieren"
+                       aria-describedby="contrastDescription">
+                <label for="contrastToggle">Hochkontrast-Modus aktivieren</label>
+            </div>
+            <p id="contrastDescription" class="success-message" style="display: none;">
+                <i class="fas fa-check-circle" aria-hidden="true"></i>
+                <span id="contrastStatusText">Kontrastmodus aktualisiert</span>
+            </p>
+        </section>
+
+        <section aria-labelledby="previewHeading">
+            <h2 id="previewHeading">Vorschau</h2>
+            <div style="border: 2px solid #1976D2; padding: 1rem; border-radius: 4px; background-color: #F5F5F5;">
+                <p><strong>Dies ist ein Vorschautext</strong> mit den aktuellen Einstellungen.</p>
+                <p><a href="#">Dies ist ein Link</a> zur Demonstration.</p>
+                <button class="btn" style="width: auto;">Dies ist ein Button</button>
+            </div>
+        </section>
+
+        <section aria-labelledby="helpHeading">
+            <h2 id="helpHeading">Hilfe & Information</h2>
+            <details>
+                <summary>Tipps zur Barrierefreiheit</summary>
+                <ul>
+                    <li><strong>Tastaturnavigation:</strong> Nutzen Sie die Tab-Taste zum Navigieren zwischen Elementen.</li>
+                    <li><strong>Schriftgröße:</strong> Größere Schrift kann für Menschen mit Sehbeeinträchtigungen hilfreich sein.</li>
+                    <li><strong>Kontrast:</strong> Der Hochkontrast-Modus verbessert die Lesbarkeit für Menschen mit Farbblindheit.</li>
+                    <li><strong>Tastenkombinationen:</strong> Verwenden Sie Alt + Z für Schnellzugriff auf Einstellungen.</li>
+                </ul>
+            </details>
+        </section>
+    </main>
+
+    <script th:src="@{/script/script.js}" defer></script>
 </body>
 </html>

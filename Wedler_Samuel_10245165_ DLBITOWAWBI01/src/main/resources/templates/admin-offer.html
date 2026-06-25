@@ -1,55 +1,139 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="de">
 <head>
-    <title>Serviceportal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin - Serviceangebote verwalten">
+    <title>Serviceangebote verwalten - Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}" />
-<script th:src="@{/script/script.js}"></script>
 </head>
-<body th:classappend="${fontSize} + ' ' + (${highContrast} ? 'high-contrast' : '')">
-    <header>
-        <form th:action="@{/logout}" method="post">
-        <input type="submit" class="logout" value="Logout">
-        </form>
-        <a href="/">🏠</a>
+<body th:classappend="${fontSize} + ' ' + (${highContrast} ? 'high-contrast' : '')" role="application">
+    <header role="banner">
+        <nav role="navigation" aria-label="Admin Navigation">
+            <a href="/" class="icon-btn" title="Startseite" aria-label="Zurück zur Startseite">
+                <i class="fas fa-home" aria-hidden="true"></i>
+            </a>
+            <form th:action="@{/logout}" method="post" style="display: flex;">
+                <button type="submit" class="btn logout" aria-label="Abmelden">
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                    Abmelden
+                </button>
+            </form>
+        </nav>
     </header>
-<form th:action="@{/admin/offer}" method="post">
 
-    <input type="hidden"
-           th:name="${_csrf.parameterName}"
-           th:value="${_csrf.token}" />
+    <main role="main">
+        <h1>
+            <i class="fas fa-cogs" aria-hidden="true"></i>
+            Serviceangebote verwalten
+        </h1>
 
-    <input type="text"
-           name="title"
-           placeholder="Titel des Serviceangebots"
-           required />
+        <section aria-labelledby="createHeading" style="margin-bottom: 2rem; padding: 1.5rem; background-color: #E3F2FD; border-radius: 4px;">
+            <h2 id="createHeading" style="margin-top: 0;">
+                <i class="fas fa-plus-circle" aria-hidden="true"></i>
+                Neues Serviceangebot erstellen
+            </h2>
 
-    <textarea name="description"
-              placeholder="Beschreibung des Serviceangebots"></textarea>
+            <form th:action="@{/admin/offer}" method="post" novalidate>
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}" />
 
-    <button type="submit" class="btn">
-        Serviceangebot hinzufügen
-    </button>
+                <div>
+                    <label for="title">Titel</label>
+                    <input type="text"
+                           id="title"
+                           name="title"
+                           placeholder="z.B. 'Stadtreinigung'"
+                           required
+                           aria-label="Titel des Serviceangebots"
+                           aria-describedby="titleHelp"
+                           maxlength="100" />
+                    <p id="titleHelp" class="sr-only">Kurzer, aussagekräftiger Titel</p>
+                </div>
 
-</form>
+                <div>
+                    <label for="description">Beschreibung</label>
+                    <textarea id="description"
+                              name="description"
+                              placeholder="Detaillierte Beschreibung des Services..."
+                              required
+                              aria-label="Beschreibung des Serviceangebots"
+                              aria-describedby="descriptionHelp"
+                              minlength="10"
+                              maxlength="1000"></textarea>
+                    <p id="descriptionHelp" class="sr-only">Umfangreiche Beschreibung des angebotenen Services</p>
+                </div>
 
-<h1>Serviceangebote</h1>
+                <button type="submit" class="btn" aria-label="Neues Serviceangebot hinzufügen">
+                    <i class="fas fa-save" aria-hidden="true"></i>
+                    Serviceangebot hinzufügen
+                </button>
+            </form>
+        </section>
 
-<ul>
-    <li th:each="service : ${services}">
-        <span th:text="${service.title}"></span>
-        <p th:text="${service.description}"></p>
-        <form th:action="@{/admin/edit/{id}(id=${service.id})}" 
-            method="get" 
-            style="display:inline;">
-            <input type="submit" value="Bearbeiten" class="btn">
-        </form>
-        <form th:action="@{/admin/delete/{id}(id=${service.id})}" method="post"
-            onsubmit="return confirm('Möchtest du diesen Service wirklich löschen?');"
-            style="display:inline;">
-            <input type="submit" value="Löschen" class="btn">
-        </form>
-    </li>
-</ul>
+        <section aria-labelledby="listHeading">
+            <h2 id="listHeading">
+                <i class="fas fa-list" aria-hidden="true"></i>
+                Vorhandene Serviceangebote
+            </h2>
 
+            <ul style="list-style: none; padding: 0;">
+                <li th:each="service : ${services}" 
+                    style="background: white; margin-bottom: 1rem; padding: 1rem; border: 1px solid #BDBDBD; border-radius: 4px; border-left: 4px solid #1976D2;">
+                    
+                    <h3 style="margin-top: 0; margin-bottom: 0.5rem;">
+                        <i class="fas fa-check-square" aria-hidden="true"></i>
+                        <span th:text="${service.title}"></span>
+                    </h3>
+                    
+                    <p th:text="${service.description}" style="margin: 0.5rem 0; color: #666;"></p>
+                    
+                    <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                        <form th:action="@{/admin/edit/{id}(id=${service.id})}" 
+                              method="get" 
+                              style="flex: 1;">
+                            <button type="submit" class="btn" aria-label="Service bearbeiten">
+                                <i class="fas fa-edit" aria-hidden="true"></i>
+                                Bearbeiten
+                            </button>
+                        </form>
+                        
+                        <form th:action="@{/admin/delete/{id}(id=${service.id})}" 
+                              method="post"
+                              style="flex: 1;"
+                              onsubmit="return confirm('Möchten Sie diesen Service wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.');">
+                            <input type="hidden"
+                                   th:name="${_csrf.parameterName}"
+                                   th:value="${_csrf.token}" />
+                            <button type="submit" class="btn" style="background-color: #D32F2F; border-color: #B71C1C;" aria-label="Service löschen">
+                                <i class="fas fa-trash" aria-hidden="true"></i>
+                                Löschen
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+
+            <p th:if="${services.isEmpty()}" style="text-align: center; color: #999; padding: 2rem;">
+                <i class="fas fa-inbox" aria-hidden="true"></i>
+                Keine Serviceangebote vorhanden. Erstellen Sie ein neues Angebot oben.
+            </p>
+        </section>
+
+        <section aria-labelledby="adminHeading" style="margin-top: 2rem; padding: 1rem; background-color: #F5F5F5; border-radius: 4px;">
+            <h2 id="adminHeading" style="font-size: 0.9rem;">
+                <i class="fas fa-tools" aria-hidden="true"></i>
+                Admin-Links
+            </h2>
+            <ul style="margin: 0.5rem 0;">
+                <li><a href="/admin/requests" aria-label="Serviceanfragen verwalten"><i class="fas fa-file-alt" aria-hidden="true"></i> Anfragen verwalten</a></li>
+                <li><a href="/admin/rolemanagement" aria-label="Rollen verwalten"><i class="fas fa-user-tie" aria-hidden="true"></i> Rollen verwalten</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <script th:src="@{/script/script.js}" defer></script>
 </body>
 </html>

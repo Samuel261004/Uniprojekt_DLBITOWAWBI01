@@ -1,60 +1,144 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="de">
 <head>
-    <title>Rollenverwaltung</title>
     <meta charset="UTF-8">
-
-<link rel="stylesheet" th:href="@{/css/style.css}" />
-<script th:src="@{/script/script.js}"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin - Benutzerrollen verwalten">
+    <title>Rollenverwaltung - Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
-<body th:classappend="${fontSize} + ' ' + (${highContrast} ? 'high-contrast' : '')">
-    <header>
-        <form th:action="@{/logout}" method="post">
-        <input type="submit" class="logout" value="Logout">
-        </form>
-        <a href="/">🏠</a>
+<body th:classappend="${fontSize} + ' ' + (${highContrast} ? 'high-contrast' : '')" role="application">
+    <header role="banner">
+        <nav role="navigation" aria-label="Admin Navigation">
+            <a href="/" class="icon-btn" title="Startseite" aria-label="Zurück zur Startseite">
+                <i class="fas fa-home" aria-hidden="true"></i>
+            </a>
+            <form th:action="@{/logout}" method="post" style="display: flex;">
+                <button type="submit" class="btn logout" aria-label="Abmelden">
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                    Abmelden
+                </button>
+            </form>
+        </nav>
     </header>
-<div class="container">
 
-    <h1>Rollenverwaltung</h1>
+    <main role="main">
+        <h1>
+            <i class="fas fa-user-tie" aria-hidden="true"></i>
+            Benutzerrollen verwalten
+        </h1>
 
-    <form th:action="@{/admin/role-management}"
-          method="post">
+        <section aria-labelledby="formHeading" style="max-width: 500px; margin-bottom: 2rem; padding: 1.5rem; background-color: #E3F2FD; border-radius: 4px;">
+            <h2 id="formHeading" style="margin-top: 0;">Rolle ändern</h2>
 
-        <div class="form-group">
-            <label for="userId">Benutzer-ID</label>
-            <input type="number"
-                   id="userId"
-                   name="userId"
-                   required
-                   min="1">
-        </div>
+            <form th:action="@{/admin/role-management}"
+                  method="post"
+                  novalidate>
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}" />
 
-        <div class="form-group">
-            <label for="role">Neue Rolle</label>
+                <div>
+                    <label for="userId">Benutzer-ID</label>
+                    <input type="number"
+                           id="userId"
+                           name="userId"
+                           required
+                           min="1"
+                           aria-label="Benutzer-ID eingeben"
+                           aria-describedby="userIdHelp"
+                           placeholder="z.B. 1, 2, 3..." />
+                    <p id="userIdHelp" class="sr-only">Geben Sie die numerische ID des Benutzers ein</p>
+                </div>
 
-            <select id="role"
-                    name="role"
-                    required>
+                <div>
+                    <label for="role">Neue Rolle zuweisen</label>
 
-                <option value="">Bitte auswählen</option>
-                <option value="USER">USER</option>
-                <option value="ADMIN">ADMIN</option>
+                    <select id="role"
+                            name="role"
+                            required
+                            aria-label="Neue Rolle auswählen"
+                            aria-describedby="roleHelp">
+                        <option value="" disabled selected>-- Bitte Rolle wählen --</option>
+                        <option value="USER">
+                            <i class="fas fa-user" aria-hidden="true"></i>
+                            Benutzer (USER)
+                        </option>
+                        <option value="ADMIN">
+                            <i class="fas fa-crown" aria-hidden="true"></i>
+                            Administrator (ADMIN)
+                        </option>
+                    </select>
+                    <p id="roleHelp" class="sr-only">Wählen Sie die neue Rolle für diesen Benutzer</p>
+                </div>
 
-            </select>
-        </div>
+                <button type="submit" class="btn" aria-label="Rolle zuweisen">
+                    <i class="fas fa-save" aria-hidden="true"></i>
+                    Rolle ändern
+                </button>
+            </form>
 
-        <button type="submit" class="btn">
-            Rolle ändern
-        </button>
+            <div class="error-message" style="margin-top: 1rem; display: none;" id="errorMessage" role="alert">
+                <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                <span id="errorText"></span>
+            </div>
 
-    </form>
+            <div class="success-message" style="margin-top: 1rem; display: none;" id="successMessage" role="alert">
+                <i class="fas fa-check-circle" aria-hidden="true"></i>
+                <span id="successText"></span>
+            </div>
+        </section>
 
-    <a href="/" class="back-link">
-        Zur Startseite
-    </a>
+        <section aria-labelledby="infoHeading" style="padding: 1rem; background-color: #FFF3E0; border-radius: 4px; border-left: 4px solid #F57F17;">
+            <h2 id="infoHeading" style="font-size: 0.9rem; margin-top: 0;">
+                <i class="fas fa-info-circle" aria-hidden="true"></i>
+                Information zu Rollen
+            </h2>
 
-</div>
+            <dl>
+                <dt style="font-weight: 600; margin-top: 0.5rem;">
+                    <i class="fas fa-user" aria-hidden="true"></i>
+                    Benutzer (USER)
+                </dt>
+                <dd style="margin-left: 2rem; margin-bottom: 0.5rem;">
+                    Normale Benutzer können:
+                    <ul>
+                        <li>Serviceangebote ansehen</li>
+                        <li>Serviceanfragen einreichen</li>
+                        <li>Benachrichtigungen empfangen</li>
+                        <li>Ihre Barrierefreiheits-Einstellungen konfigurieren</li>
+                    </ul>
+                </dd>
 
+                <dt style="font-weight: 600; margin-top: 0.5rem;">
+                    <i class="fas fa-crown" aria-hidden="true"></i>
+                    Administrator (ADMIN)
+                </dt>
+                <dd style="margin-left: 2rem;">
+                    Administratoren können zusätzlich:
+                    <ul>
+                        <li>Serviceangebote erstellen und bearbeiten</li>
+                        <li>Serviceanfragen bearbeiten und genehmigen</li>
+                        <li>Benutzerrollen verwalten</li>
+                        <li>Alle Benachrichtigungen verwalten</li>
+                    </ul>
+                </dd>
+            </dl>
+        </section>
+
+        <section aria-labelledby="warningHeading" style="margin-top: 2rem; padding: 1rem; background-color: #FFEBEE; border-radius: 4px; border-left: 4px solid #D32F2F;">
+            <h2 id="warningHeading" style="font-size: 0.9rem; color: #C62828; margin-top: 0;">
+                <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                Wichtig: Admin-Rechte
+            </h2>
+            <p style="color: #B71C1C;">
+                Das Zuweisen von Admin-Rollen sollte mit Vorsicht erfolgt. 
+                Administratoren haben vollständigen Zugriff auf alle Verwaltungsfunktionen.
+            </p>
+        </section>
+    </main>
+
+    <script th:src="@{/script/script.js}" defer></script>
 </body>
 </html>

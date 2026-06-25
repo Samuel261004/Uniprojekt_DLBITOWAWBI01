@@ -1,49 +1,106 @@
 <!DOCTYPE html>
-<html xmlns:th="https//www.w3.org/1999/xhtml" lang="en">
+<html xmlns:th="https://www.w3.org/1999/xhtml" lang="de">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <meta name="description" content="Registrieren Sie sich für das barrierefreie Serviceportal">
+    <title>Registrierung - Serviceportal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}" />
-<script th:src="@{/script/script.js}"></script>
 </head>
-<body>
-<div>
-    <form th:action="@{/register}" method="POST" class="wrapper">
-        <div>
-            <label for="username">Benutzername</label>
-            <input type="text" id="username" name="username" required>
-            <div th:if="${usernameError}">
-                <p th:text="${usernameError}"></p>
-            </div>
-            <div th:if="${usernameLengthError}">
-                <p th:text="${usernameLengthError}"></p>
-            </div>
-        </div>
-        <div>
-            <label for="password">Passwort</label>
-            <input type="password" id="password" name="password" required>
-            <div th:if="${passwordError}">
-                <p th:text="${passwordError}"></p>
-            </div>
-            <div th:if="${passwordLengthError}">
-                <p th:text="${passwordLengthError}"></p>
-            </div>
-        </div>
-        <div>
-            <label for="confirmPassword">Passwort bestätigen</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" required>
-            <div th:if="${passwordError}">
-                <p th:text="${passwordError}"></p>
-            </div>
-        </div>
+<body role="application">
+    <main role="main" class="wrapper">
+        <div style="max-width: 400px; width: 100%;">
+            <h1>
+                <i class="fas fa-user-plus" aria-hidden="true"></i>
+                Registrierung
+            </h1>
+            <p>Erstellen Sie ein neues Konto</p>
+            
+            <form th:action="@{/register}" method="POST" novalidate>
+                <div>
+                    <label for="username">Benutzername</label>
+                    <input type="text" 
+                           id="username" 
+                           name="username" 
+                           required
+                           aria-label="Benutzername eingeben"
+                           aria-describedby="usernameError"
+                           autocomplete="username">
+                    <div th:if="${usernameError}" id="usernameError" class="error-message" role="alert">
+                        <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                        <span th:text="${usernameError}"></span>
+                    </div>
+                    <div th:if="${usernameLengthError}" class="error-message" role="alert">
+                        <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                        <span th:text="${usernameLengthError}"></span>
+                    </div>
+                </div>
 
-        <div>
-            <button type="submit">Register</button>
-            <a href="/login">Login</a>
+                <div>
+                    <label for="password">Passwort</label>
+                    <input type="password" 
+                           id="password" 
+                           name="password" 
+                           required
+                           aria-label="Passwort eingeben"
+                           aria-describedby="passwordError passwordHelp"
+                           autocomplete="new-password">
+                    <p id="passwordHelp" class="sr-only">Das Passwort muss mindestens 8 Zeichen lang sein</p>
+                    <div th:if="${passwordError}" id="passwordError" class="error-message" role="alert">
+                        <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                        <span th:text="${passwordError}"></span>
+                    </div>
+                    <div th:if="${passwordLengthError}" class="error-message" role="alert">
+                        <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                        <span th:text="${passwordLengthError}"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="confirmPassword">Passwort bestätigen</label>
+                    <input type="password" 
+                           id="confirmPassword" 
+                           name="confirmPassword" 
+                           required
+                           aria-label="Passwort bestätigung eingeben"
+                           aria-describedby="confirmPasswordError"
+                           autocomplete="new-password">
+                    <div th:if="${passwordError}" id="confirmPasswordError" class="error-message" role="alert">
+                        <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                        <span>Passwörter stimmen nicht überein</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn" aria-label="Registrieren">
+                    <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    Registrieren
+                </button>
+
+                <p style="text-align: center; margin-top: 1rem;">
+                    <span>Bereits registriert?</span>
+                    <a href="/login">
+                        <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                        Hier anmelden
+                    </a>
+                </p>
+            </form>
+
+            <section aria-labelledby="passwordRequirementsHeading" style="margin-top: 2rem; padding: 1rem; background-color: #FFF3E0; border-radius: 4px;">
+                <h2 id="passwordRequirementsHeading" style="font-size: 0.9rem; margin-top: 0;">
+                    <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                    Passwort-Anforderungen
+                </h2>
+                <ul style="font-size: 0.85rem; margin: 0.5rem 0;">
+                    <li>Mindestens 8 Zeichen lang</li>
+                    <li>Großbuchstaben und Kleinbuchstaben enthalten</li>
+                    <li>Zahlen oder Sonderzeichen enthalten (empfohlen)</li>
+                </ul>
+            </section>
         </div>
-    </form>
-</div>
+    </main>
+
+    <script th:src="@{/script/script.js}" defer></script>
 </body>
 </html>

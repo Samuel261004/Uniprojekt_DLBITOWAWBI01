@@ -1,49 +1,107 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="de">
 <head>
-    <title>Anfrage</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Serviceanfrage einreichen - barrierefreies Formular">
+    <title>Serviceanfrage einreichen</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}" />
-<script th:src="@{/script/script.js}"></script>
 </head>
-<body th:classappend="${fontSize} + ' ' + (${highContrast} ? 'high-contrast' : '')">
-    <header>
-        <form th:action="@{/logout}" method="post">
-        <input type="submit" class="logout" value="Logout">
-    </form>
-        <a href="/">🏠</a>
+<body th:classappend="${fontSize} + ' ' + (${highContrast} ? 'high-contrast' : '')" role="application">
+    <header role="banner">
+        <nav role="navigation" aria-label="Kopfnavigation">
+            <a href="/" class="icon-btn" title="Startseite" aria-label="Zurück zur Startseite">
+                <i class="fas fa-home" aria-hidden="true"></i>
+            </a>
+            <form th:action="@{/logout}" method="post" style="display: flex;">
+                <button type="submit" class="btn logout" aria-label="Abmelden">
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                    Abmelden
+                </button>
+            </form>
+        </nav>
     </header>
 
-<h1>Serviceanfrage</h1>
+    <main role="main">
+        <h1>
+            <i class="fas fa-edit" aria-hidden="true"></i>
+            Neue Serviceanfrage erstellen
+        </h1>
 
-<form th:action="@{/request}" method="post" class="wrapper">
+        <form th:action="@{/request}" method="post" novalidate>
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}" />
 
-    <input type="hidden"
-           th:name="${_csrf.parameterName}"
-           th:value="${_csrf.token}" />
+            <div>
+                <label for="subject">Betreff</label>
+                <input type="text" 
+                       id="subject"
+                       name="subject"
+                       required
+                       placeholder="Kurzer Titel Ihrer Anfrage"
+                       aria-label="Betreff der Anfrage"
+                       aria-describedby="subjectHelp"
+                       maxlength="100">
+                <p id="subjectHelp" class="sr-only">Geben Sie einen kurzen Titel für Ihre Anfrage ein (max. 100 Zeichen)</p>
+            </div>
 
-    <label>Betreff</label>
-    <input type="text" name="subject">
+            <div>
+                <label for="message">Nachricht</label>
+                <textarea id="message" 
+                          name="message"
+                          required
+                          placeholder="Detaillierte Beschreibung Ihrer Anfrage"
+                          aria-label="Nachricht mit Details"
+                          aria-describedby="messageHelp"
+                          minlength="10"
+                          maxlength="2000"></textarea>
+                <p id="messageHelp" class="sr-only">Geben Sie eine detaillierte Beschreibung Ihrer Anfrage ein (10-2000 Zeichen)</p>
+            </div>
 
-    <br><br>
+            <div>
+                <label for="serviceId">Service auswählen</label>
+                <select id="serviceId" 
+                        name="serviceId"
+                        required
+                        aria-label="Wählen Sie einen Service"
+                        aria-describedby="serviceHelp">
+                    <option value="" disabled selected>-- Bitte wählen --</option>
+                    <option th:each="service : ${services}"
+                            th:value="${service.id}"
+                            th:text="${service.title}">
+                    </option>
+                </select>
+                <p id="serviceHelp" class="sr-only">Wählen Sie aus der Liste einen Service für Ihre Anfrage</p>
+            </div>
 
-    <label>Nachricht</label>
-    <textarea name="message"></textarea>
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button type="submit" class="btn" style="flex: 1;" aria-label="Anfrage absenden">
+                    <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                    Anfrage absenden
+                </button>
+                <button type="reset" class="btn" style="flex: 1; background-color: #757575;" aria-label="Formular zurücksetzen">
+                    <i class="fas fa-redo" aria-hidden="true"></i>
+                    Zurücksetzen
+                </button>
+            </div>
+        </form>
 
-    <br><br>
+        <section aria-labelledby="tipsHeading" style="margin-top: 2rem; padding: 1rem; background-color: #E8F5E9; border-radius: 4px;">
+            <h2 id="tipsHeading" style="font-size: 0.9rem; margin-top: 0;">
+                <i class="fas fa-lightbulb" aria-hidden="true"></i>
+                Tipps zum Ausfüllen
+            </h2>
+            <ul style="font-size: 0.85rem;">
+                <li>Seien Sie so spezifisch wie möglich in Ihrer Anfrage</li>
+                <li>Geben Sie Ihren Servicetyp an</li>
+                <li>Sie erhalten eine Bestätigung per Email</li>
+                <li>Wir bearbeiten Ihre Anfrage innerhalb von 2-3 Werktagen</li>
+            </ul>
+        </section>
+    </main>
 
-    <label>Service auswählen</label>
-    <select name="serviceId">
-        <option th:each="service : ${services}"
-                th:value="${service.id}"
-                th:text="${service.title}">
-        </option>
-    </select>
-
-    <button type="submit" class="btn">
-        Absenden
-    </button>
-
-</form>
-
+    <script th:src="@{/script/script.js}" defer></script>
 </body>
 </html>

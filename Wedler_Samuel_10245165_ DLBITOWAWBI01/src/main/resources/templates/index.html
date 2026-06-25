@@ -1,67 +1,99 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="de">
 <head>
-    <title>Serviceportal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Barrierefreies Serviceportal - WCAG AAA konform">
+    <title>Serviceportal - Serviceangebote</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}" />
-<script th:src="@{/script/script.js}"></script>
 </head>
-<body th:classappend="${fontSize} + ' ' + (${highContrast} ? 'high-contrast' : '')">
-    <header>
+<body th:classappend="${fontSize} + ' ' + (${highContrast} ? 'high-contrast' : '')" role="application">
+    <header role="banner">
+        <nav role="navigation" aria-label="Hauptnavigation">
+            <a href="/settings" class="icon-btn" title="Einstellungen" aria-label="Einstellungen öffnen">
+                <i class="fas fa-cog" aria-hidden="true"></i>
+            </a>
+            
+            <button id="notificationBtn" 
+                    class="icon-btn"
+                    th:classappend="${hasUnread} ? 'notification-red' : ''"
+                    aria-label="Benachrichtigungen"
+                    aria-pressed="false"
+                    aria-expanded="false"
+                    aria-controls="notificationModal"
+                    title="Benachrichtigungen anzeigen">
+                <i class="fas fa-bell" aria-hidden="true"></i>
+                <span class="sr-only" th:if="${hasUnread}">Ungelesene Benachrichtigungen vorhanden</span>
+            </button>
+            
+            <form th:action="@{/logout}" method="post" style="display: flex;">
+                <button type="submit" class="btn logout" aria-label="Abmelden">
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Abmelden
+                </button>
+            </form>
+        </nav>
+    </header>
 
-    <a href="/settings">⚙️</a>
+    <!-- Accessible Modal for Notifications -->
+    <div id="notificationModal" 
+         class="modal"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="notificationTitle"
+         aria-hidden="true">
+        <div class="modal-content" role="document">
+            <button class="modal-close" 
+                    aria-label="Modal schließen"
+                    onclick="closeModal()">
+                <i class="fas fa-times" aria-hidden="true"></i>
+            </button>
+            
+            <h2 id="notificationTitle">Ungelesene Benachrichtigungen</h2>
+            
+            <ul aria-label="Liste der Benachrichtigungen">
+                <li th:each="notification : ${notifications}"
+                    th:text="${notification.text}"
+                    role="listitem">
+                </li>
+            </ul>
 
-    <button id="notificationBtn"
-            th:classappend="${hasUnread} ? 'notification-red' : ''"
-            onclick="openModal()">
+            <form th:if="${hasUnread}"
+                  th:action="@{/notifications/read}"
+                  method="post">
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}" />
+                <button type="submit" class="btn" aria-label="Alle Benachrichtigungen als gelesen markieren">
+                    <i class="fas fa-check" aria-hidden="true"></i> Als gelesen markieren
+                </button>
+            </form>
 
-        🔔
-    </button>
-            <form th:action="@{/logout}" method="post">
-        <input type="submit" class="logout" value="Logout">
-    </form>
-
-</header>
-<div id="notificationModal" class="modal">
-
-    <div class="modal-content">
-
-        <h2>Ungelesene Benachrichtigungen</h2>
-
-        <ul>
-            <li th:each="notification : ${notifications}"
-                th:text="${notification.text}">
-            </li>
-        </ul>
-
-<form th:if="${hasUnread}"
-      th:action="@{/notifications/read}"
-      method="post">
-
-    <input type="hidden"
-           th:name="${_csrf.parameterName}"
-           th:value="${_csrf.token}" />
-
-    <button type="submit">
-        Als gelesen markieren
-    </button>
-
-</form>
-
-        <button onclick="closeModal()">Schließen</button>
-
+            <button class="btn" onclick="closeModal()" aria-label="Benachrichtigungsmodal schließen">
+                <i class="fas fa-chevron-up" aria-hidden="true"></i> Schließen
+            </button>
+        </div>
     </div>
 
-</div>
+    <main role="main">
+        <h1>Verfügbare Serviceangebote</h1>
+        
+        <section aria-label="Serviceangebote">
+            <ul aria-label="Liste der Serviceangebote">
+                <li th:each="service : ${services}" role="listitem">
+                    <strong th:text="${service.title}"></strong>
+                    <p th:text="${service.description}"></p>
+                </li>
+            </ul>
+        </section>
 
-<h1>Serviceangebote</h1>
+        <section aria-label="Aktionen">
+            <a class="btn" href="/request" aria-label="Neue Serviceanfrage erstellen">
+                <i class="fas fa-plus" aria-hidden="true"></i> Anfrage erstellen
+            </a>
+        </section>
+    </main>
 
-<ul>
-    <li th:each="service : ${services}">
-        <span th:text="${service.title}"></span>
-    </li>
-</ul>
-
-<a class="btn" href="/request">Anfrage erstellen</a>
-
+    <script th:src="@{/script/script.js}" defer></script>
 </body>
 </html>

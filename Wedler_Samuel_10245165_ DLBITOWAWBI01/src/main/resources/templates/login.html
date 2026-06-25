@@ -1,37 +1,86 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.w3.org/1999/xhtml" lang="en">
+<html xmlns:th="https://www.w3.org/1999/xhtml" lang="de">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <meta name="description" content="Anmelden zum barrierefreien Serviceportal">
+    <title>Anmelden - Serviceportal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}" />
-<script th:src="@{/script/script.js}"></script>
 </head>
-<body>
-    <div class="wrapper">
-        <form th:action="@{/login}" method="POST">
-            <div>
-                <label for="username">Benutzername</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div >
-                <label for="password">Passwort</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div>
-            <div >
-                <button type="submit" class="btn">Login</button>
-                <a class="registerLink" href="/register">Registrieren</a>
-            </div>
-                <div th:if="${param.logout}">
-                    <p>Sie wurden abgemeldet.</p>
+<body role="application">
+    <main role="main" class="wrapper">
+        <div style="max-width: 400px; width: 100%;">
+            <h1>
+                <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                Anmelden
+            </h1>
+            
+            <form th:action="@{/login}" method="POST" novalidate>
+                <div>
+                    <label for="username">Benutzername</label>
+                    <input type="text" 
+                           id="username" 
+                           name="username" 
+                           required
+                           aria-label="Benutzername eingeben"
+                           aria-describedby="usernameHelp"
+                           autocomplete="username">
+                    <p id="usernameHelp" class="sr-only">Geben Sie Ihren Benutzernamen ein</p>
                 </div>
-                <div th:if="${param.error}">
-                    <p>Falscher Benutzername oder Passwort.</p>
+
+                <div>
+                    <label for="password">Passwort</label>
+                    <input type="password" 
+                           id="password" 
+                           name="password" 
+                           required
+                           aria-label="Passwort eingeben"
+                           aria-describedby="passwordHelp"
+                           autocomplete="current-password">
+                    <p id="passwordHelp" class="sr-only">Geben Sie Ihr Passwort ein</p>
                 </div>
-            </div>
-        </form>
-    </div>
+
+                <div role="alert" aria-live="polite" aria-atomic="true">
+                    <div th:if="${param.logout}" class="success-message">
+                        <i class="fas fa-check-circle" aria-hidden="true"></i>
+                        Sie wurden erfolgreich abgemeldet.
+                    </div>
+                    <div th:if="${param.error}" class="error-message">
+                        <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                        Falscher Benutzername oder Passwort.
+                    </div>
+                </div>
+
+                <button type="submit" class="btn" aria-label="Anmelden">
+                    <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    Anmelden
+                </button>
+                
+                <p style="text-align: center; margin-top: 1rem;">
+                    <span>Noch kein Konto?</span>
+                    <a href="/register" class="registerLink">
+                        <i class="fas fa-user-plus" aria-hidden="true"></i>
+                        Hier registrieren
+                    </a>
+                </p>
+            </form>
+
+            <section aria-labelledby="accessibilityHeading" style="margin-top: 2rem; padding: 1rem; background-color: #E3F2FD; border-radius: 4px;">
+                <h2 id="accessibilityHeading" style="font-size: 0.9rem; margin-top: 0;">
+                    <i class="fas fa-universal-access" aria-hidden="true"></i>
+                    Barrierefreiheit
+                </h2>
+                <ul style="font-size: 0.85rem; margin: 0.5rem 0;">
+                    <li>Vollständige Tastaturnavigation möglich</li>
+                    <li>Kompatibel mit Bildschirmlesegeräten</li>
+                    <li>Hohe Farbkontraste (WCAG AAA)</li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <script th:src="@{/script/script.js}" defer></script>
 </body>
 </html>

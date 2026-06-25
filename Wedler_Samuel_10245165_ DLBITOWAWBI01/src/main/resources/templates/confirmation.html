@@ -1,21 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" lang="de">
 <head>
-    <title>Bestätigung</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Bestätigung - Ihre Serviceanfrage wurde eingereicht">
+    <title>Bestätigung - Anfrage eingereicht</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}" />
-<script th:src="@{/script/script.js}"></script>
 </head>
-<body th:classappend="${fontSize} + ' ' + (${highContrast} ? 'high-contrast' : '')">
-    <header>
-        <form th:action="@{/logout}" method="post">
-        <input type="submit" class="logout" value="Logout">
-        </form>
+<body th:classappend="${fontSize} + ' ' + (${highContrast} ? 'high-contrast' : '')" role="application">
+    <header role="banner">
+        <nav role="navigation" aria-label="Kopfnavigation">
+            <form th:action="@{/logout}" method="post" style="display: flex;">
+                <button type="submit" class="btn logout" aria-label="Abmelden">
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                    Abmelden
+                </button>
+            </form>
+        </nav>
     </header>
-<h1>
-    Anfrage erfolgreich eingereicht
-</h1>
 
-<a href="/">Zurück</a>
+    <main role="main" style="text-align: center; max-width: 600px; margin: 2rem auto;">
+        <div style="padding: 2rem; background-color: #E8F5E9; border-radius: 8px; border-left: 4px solid #388E3C;">
+            <h1 style="color: #1B5E20; margin-top: 0;">
+                <i class="fas fa-check-circle" aria-hidden="true" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <br>
+                Anfrage erfolgreich eingereicht
+            </h1>
 
+            <p style="font-size: 1.1rem; color: #33691E;">
+                Vielen Dank! Ihre Serviceanfrage wurde erfolgreich übermittelt.
+            </p>
+
+            <div role="region" aria-label="Bestätigungsinformationen" style="background-color: white; padding: 1.5rem; border-radius: 4px; margin: 1.5rem 0; text-align: left;">
+                <h2 style="color: #1976D2; font-size: 1rem;">Was kommt als nächstes?</h2>
+                <ol style="color: #424242; line-height: 1.8;">
+                    <li>Sie erhalten eine Bestätigungsmail mit Ihrer Anfrage-Referenznummer</li>
+                    <li>Unser Team bearbeitet Ihre Anfrage innerhalb von 2-3 Werktagen</li>
+                    <li>Sie werden per Email über den Status benachrichtigt</li>
+                    <li>Ihre Anfrage wird in der Benachrichtigungszentrale angezeigt</li>
+                </ol>
+            </div>
+
+            <div style="background-color: #FFF9C4; padding: 1rem; border-radius: 4px; margin: 1rem 0; border-left: 4px solid #F57F17;">
+                <p style="color: #333;">
+                    <i class="fas fa-info-circle" aria-hidden="true"></i>
+                    <strong>Hinweis:</strong> Bitte bewahren Sie Ihre Bestätigungsmail auf, falls Sie Fragen zur Anfrage haben.
+                </p>
+            </div>
+
+            <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem;">
+                <a href="/" class="btn" aria-label="Zur Startseite zurückkehren">
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                    Zur Startseite
+                </a>
+                
+                <a href="/request" class="btn" style="background-color: #1976D2;" aria-label="Weitere Anfrage erstellen">
+                    <i class="fas fa-plus" aria-hidden="true"></i>
+                    Weitere Anfrage erstellen
+                </a>
+            </div>
+        </div>
+
+        <section aria-labelledby="supportHeading" style="margin-top: 2rem; padding: 1rem; background-color: #F5F5F5; border-radius: 4px;">
+            <h2 id="supportHeading" style="color: #424242;">Benötigen Sie Hilfe?</h2>
+            <p>Bei Fragen oder Problemen wenden Sie sich bitte an unseren Support:</p>
+            <ul style="list-style: none; padding: 0;">
+                <li>📧 Email: <a href="mailto:support@serviceportal.de">support@serviceportal.de</a></li>
+                <li>📞 Telefon: +49 (0) 123 456789</li>
+                <li>💬 Live-Chat: Verfügbar Mo-Fr 9:00-17:00 Uhr</li>
+            </ul>
+        </section>
+    </main>
+
+    <script th:src="@{/script/script.js}" defer></script>
 </body>
 </html>

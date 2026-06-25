@@ -1,63 +1,94 @@
 <!DOCTYPE html>
-
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Service bearbeiten</title>
-
-<link rel="stylesheet" th:href="@{/css/style.css}" />
-<script th:src="@{/script/script.js}"></script>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Serviceangebot bearbeiten">
+    <title>Service bearbeiten - Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
-<body th:classappend="${fontSize} + ' ' + (${highContrast} ? 'high-contrast' : '')">
-
-```
-    <header>
-        <form th:action="@{/logout}" method="post">
-        <input type="submit" class="logout" value="Logout">
-        </form>
-        <a href="/">🏠</a>
+<body th:classappend="${fontSize} + ' ' + (${highContrast} ? 'high-contrast' : '')" role="application">
+    <header role="banner">
+        <nav role="navigation" aria-label="Kopfnavigation">
+            <a href="/admin" class="icon-btn" title="Zurück zur Admin-Seite" aria-label="Zurück zur Admin-Seite">
+                <i class="fas fa-arrow-left" aria-hidden="true"></i>
+            </a>
+            <form th:action="@{/logout}" method="post" style="display: flex;">
+                <button type="submit" class="btn logout" aria-label="Abmelden">
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                    Abmelden
+                </button>
+            </form>
+        </nav>
     </header>
-<h1>Service bearbeiten</h1>
 
-<form th:action="@{/admin/edit/{id}(id=${service.id})}" method="post" class="wrapper">
+    <main role="main">
+        <h1>
+            <i class="fas fa-edit" aria-hidden="true"></i>
+            Serviceangebot bearbeiten
+        </h1>
 
-    <div>
-        <label for="title">Titel</label>
-        <br>
-        <input type="text"
-               id="title"
-               name="title"
-               th:value="${service.title}"
-               required />
-    </div>
+        <form th:action="@{/admin/edit/{id}(id=${service.id})}" method="post" novalidate style="max-width: 600px;">
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}" />
 
-    <br>
+            <div>
+                <label for="title">Titel des Serviceangebots</label>
+                <input type="text"
+                       id="title"
+                       name="title"
+                       th:value="${service.title}"
+                       required
+                       aria-label="Titel eingeben"
+                       aria-describedby="titleHelp"
+                       maxlength="100" />
+                <p id="titleHelp" class="sr-only">Geben Sie einen aussagekräftigen Titel für das Serviceangebot ein</p>
+            </div>
 
-    <div>
-        <label for="description">Beschreibung</label>
-        <br>
-        <textarea id="description"
-                  name="description"
-                  rows="8"
-                  cols="60"
-                  required
-                  th:text="${service.description}"></textarea>
-    </div>
+            <div>
+                <label for="description">Beschreibung</label>
+                <textarea id="description"
+                          name="description"
+                          required
+                          aria-label="Beschreibung eingeben"
+                          aria-describedby="descriptionHelp"
+                          minlength="10"
+                          maxlength="2000"
+                          th:text="${service.description}"></textarea>
+                <p id="descriptionHelp" class="sr-only">Geben Sie eine detaillierte Beschreibung des Serviceangebots ein (10-2000 Zeichen)</p>
+            </div>
 
-    <br>
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button type="submit" class="btn" style="flex: 1;" aria-label="Änderungen speichern">
+                    <i class="fas fa-save" aria-hidden="true"></i>
+                    Speichern
+                </button>
 
-    <div>
-        <button type="submit" class="btn">
-            Änderungen speichern
-        </button>
+                <a th:href="@{/admin}" class="btn" style="flex: 1; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center;" aria-label="Bearbeitung abbrechen">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                    Abbrechen
+                </a>
+            </div>
+        </form>
 
-        <a th:href="@{/admin}" class="btn">
-            Abbrechen
-        </a>
-    </div>
+        <section aria-labelledby="dangerHeading" style="margin-top: 2rem; padding: 1rem; background-color: #FFEBEE; border-radius: 4px; border-left: 4px solid #D32F2F;">
+            <h2 id="dangerHeading" style="color: #B71C1C; font-size: 0.9rem; margin-top: 0;">
+                <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                Gefährliche Zone
+            </h2>
+            <p>Diese Aktion kann nicht rückgängig gemacht werden.</p>
+            <a href="/admin" class="btn" style="background-color: #D32F2F; border-color: #B71C1C;">
+                <i class="fas fa-trash" aria-hidden="true"></i>
+                Serviceangebot löschen
+            </a>
+        </section>
+    </main>
 
-</form>
+    <script th:src="@{/script/script.js}" defer></script>
+</body>
+</html>
 ```
 
 </body>
