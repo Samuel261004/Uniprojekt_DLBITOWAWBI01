@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.model.Notification;
 import com.example.demo.model.Role;
@@ -62,13 +63,23 @@ public class AdminController {
         return "admin-offer";
     }
 
-    @PostMapping("/admin/offer")
-    public String addOffer(@RequestParam String title, @RequestParam String description) {
+@PostMapping("/admin/offer")
+public String addOffer(@RequestParam String title,
+                       @RequestParam String description,
+                       RedirectAttributes redirectAttributes) {
 
-        offerRepository.save(new ServiceOffer(title, description));
-
+    if (offerRepository.existsByTitle(title)) {
+        redirectAttributes.addFlashAttribute("error",
+                "Ein Angebot mit diesem Titel existiert bereits.");
         return "redirect:/admin/offer";
     }
+
+    offerRepository.save(new ServiceOffer(title, description));
+    redirectAttributes.addFlashAttribute("success",
+            "Angebot erfolgreich angelegt.");
+
+    return "redirect:/admin/offer";
+}
 
     @GetMapping("/admin/edit/{id}")
     public String editServicePage(@PathVariable Long id, Model model) {
